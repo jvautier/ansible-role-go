@@ -1,0 +1,32 @@
+---
+# - name: Include ansible_distribution and ansible_os_family tasks
+#   include: "{{ item }}"
+#   with_first_found:
+#     - "{{ ansible_distribution | lower }}.yml"
+#     - "{{ ansible_os_family | lower }}.yml"
+
+- name: download https://storage.googleapis.com/golang/go{{ go_version }}.linux-amd64.tar.gz to /usr/local
+  unarchive:
+    src: https://storage.googleapis.com/golang/go{{ go_version }}.linux-amd64.tar.gz
+    dest: "{{ go_bin_base_path }}"
+    remote_src: true
+    mode: 0777
+
+- name: /etc/profile.d/go.sh
+  become: true
+  copy:
+    dest: /etc/profile.d/go.sh
+    content: "export PATH=$PATH:{{ go_root_path }}/bin"
+# - name: go libs
+#   become: "jvautier"
+#   shell: "{{ go_root_path }}/bin/go get -u {{ item }}"
+#   loop: "{{ go_libs }}"
+#   environment:
+#       GOPATH: /home/jvautier/go
+
+# - name: go libs
+#   become: "{{ item[0] }}"
+#   shell: "{{ go_root_path }}/bin/go get -u {{ item[1] }}"
+#   loop: "{{ users |product( go_libs )|list }}"
+#   environment:
+#       GOPATH: /home/jvautier/go

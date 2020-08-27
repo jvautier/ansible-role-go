@@ -1,0 +1,6 @@
+---
+go_version: 1.12.1
+go_bin_base_path: /usr/local
+go_root_path: "{{ go_bin_base_path }}/go"
+go_users: []
+go_libs: []
